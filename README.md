@@ -4,10 +4,12 @@ Some bash scripts to make our life easier to use Kubernetes.
 ## How to install it
 * Download the `.ku` file to your local directory (`~/.ku` for example).
 * Modify your `~/.bashrc` (or `~/.bash_profile`) file to import it.
+
   ```
   . ~/.ku
   ```
 * Reload your bashrc (or bash_profile) file.
+
   ```
   source ~/.bashrc
   ```
