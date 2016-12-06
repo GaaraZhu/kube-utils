@@ -1,0 +1,51 @@
+#k8s
+alias kd='kubectl --context=dev'
+alias kpus='kubectl --context=us'
+alias kpeu='kubectl --context=eu'
+
+#get name of resources like pod, configmap, service, deployment etc
+kubeget(){
+kubectl get $1 --context=$2 | grep "$3" | sed -n "1p" | awk '{print $1}'
+}
+
+#tail the logs of a specific pod
+kubelog(){
+pod=$(kubeget pod $1 $2)
+kubectl --context=$1 log --tail=${3--1} -f $pod
+}
+kdlogf(){
+kubelog dev $1 $2
+}
+alias kdlog=kdlogf
+kpuslogf(){
+kubelog us $1 $2
+}
+alias kpuslog=kpuslogf
+kpeulogf(){
+kubelog eu $1 $2
+}
+alias kpeulog=kpeulogf
+
+#describe a specific resource
+kubedsf(){
+com=$(kubeget $1 $2 $3)
+kubectl --context=$2 describe $1 $com
+}
+kddsf(){
+kubedsf $1 dev $2
+}
+alias kdds=kddsf
+kpusdsf(){
+kubedsf $1 us $2
+}
+alias kpusds=kpusdsf
+kpeudsf(){
+kubedsf $1 eu $2
+}
+alias kpeuds=kpeudsf
+
+#get all docker images
+kitf(){
+kubectl --context=$1 get pod --template='{{ range .items }}{{ range .spec.containers }}{{printf "%-30s\n" .image}}{{ end }}{{ end }}' | sort -u
+}
+alias kit=kitf
